@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,14 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('user/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
 
 
+    });
+    Route::group(
+        [
+            'middleware'    => ['role:admin|peg.produksi|c.level'],
+        ],
+        function () {
+            Route::get('profil', [ProfilController::class, 'index'])->name('profil');
+            Route::post('update-profil/{update}', [ProfilController::class, 'updateProfil'])->name('update-profil');
     });
 
 });

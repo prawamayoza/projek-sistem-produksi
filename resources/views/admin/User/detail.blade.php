@@ -57,19 +57,20 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="mb-3 row">
                                         <label for="role" class="col-md-2 col-form-label">Role</label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control @error('role') is-invalid @enderror"
                                                 id="role" name="role" placeholder="Masukan role"
-                                                value="{{ old('role', isset($user) && $user->hasRole($role->name)) }}" disabled>
+                                                value="{{ old('role', $roles) }}" disabled>
                                             @if ($errors->has('role'))
                                                 <span class="text-danger">
                                                     {{ $errors->first('role') }}
                                                 </span>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div>                                    
 
                                 </div>
                             </div>

@@ -80,8 +80,9 @@
                                                         </a>
                                                         <button value="{{ route('user.destroy', $item->id) }}"
                                                             class="btn btn-sm btn-outline-danger delete"
-                                                            data-toggle="tooltip" data-placement="top" title="Hapus"> <i
-                                                                class="fas fa-trash"></i>
+                                                            data-toggle="tooltip" data-placement="top" title="Hapus"
+                                                            @if(auth()->id() == $item->id) disabled @endif>
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     </td>
                                                 </tr>

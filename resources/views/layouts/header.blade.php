@@ -20,11 +20,7 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">
-                {{-- <a href="{{ route('profil') }}" class="dropdown-item has-icon">
-                    <i class="fas fa-user"></i> 
-                    Profile
-                </a> --}}
-                <a href="#" class="dropdown-item has-icon">
+                <a href="{{ route('profil') }}" class="dropdown-item has-icon">
                     <i class="fas fa-user"></i> 
                     Profile
                 </a>

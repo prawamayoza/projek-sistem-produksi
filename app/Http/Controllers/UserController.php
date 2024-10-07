@@ -70,9 +70,13 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user   = User::findOrFail($id);
+        $roles = $user->roles->map(function ($role) {
+            return $role->name;
+        })->implode(', ');
 
         return view('admin.user.detail', [
             'user'      => $user,
+            'roles'      => $roles,
             'title'     => 'Detail User'
         ]);
     }
