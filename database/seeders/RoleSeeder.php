@@ -22,5 +22,9 @@ class RoleSeeder extends Seeder
             'name' => 'peg.produksi',
             'guard_name' => 'web'
         ]);
+        Role::create([
+            'name' => 'c.level',
+            'guard_name' => 'web'
+        ]);
     }
 }

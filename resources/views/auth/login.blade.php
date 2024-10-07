@@ -44,6 +44,14 @@
                                 </h4>
                             </div>
                             <div class="card-body">
+                                @if (session('status'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ session('status') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
 
@@ -153,6 +161,14 @@
                 passwordToggle.classList.add("fa-eye-slash");
             }
         }
+    </script>
+    <script>
+        // Menutup alert secara otomatis setelah 5 detik
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 3000); 
+        });
     </script>
 </body>
 

@@ -211,4 +211,7 @@ return [
 
     'partitioned' => false,
 
+    'lifetime' => 120, // Waktu sesi dalam menit
+    'expire_on_close' => true, // Expire saat browser ditutup
+
 ];
