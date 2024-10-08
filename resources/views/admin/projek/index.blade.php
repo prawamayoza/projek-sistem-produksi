@@ -3,7 +3,7 @@
     <div class="main-content">
         <div class="section">
             <div class="section-header">
-                <h1>Data User</h1>
+                <h1>Data Projek</h1>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -12,10 +12,10 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between w-100">
                                     <h4>
-                                        Data User
+                                        Data Projek
                                     </h4>
                                     <div class="d-flex justify-content-between">
-                                        <a href="{{ route('user.create') }}"
+                                        <a href="{{ route('projek.create') }}"
                                             class="btn btn-outline-success btn-lg d-flex align-items-center ">
                                             <i class="fa fa-plus pr-2"></i>
                                             Tambah
@@ -35,13 +35,13 @@
                                                     Nama
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Email
+                                                    Tanggal
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Status Akun
+                                                    Deskripsi
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Role
+                                                    File
                                                 </th>
                                                 <th class="text-center px-2">
                                                     Aksi
@@ -49,7 +49,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($user as $item)
+                                            @foreach ($projek as $item)
                                                 <tr>
                                                     <td class="px-2">
                                                         {{ $loop->iteration }}
@@ -58,35 +58,33 @@
                                                         {{ $item->name }}
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        {{ $item->email }}
+                                                        {{ $item->tanggal }}
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        <input type="checkbox" class="toggle-status" data-id="{{ $item->id }}" {{ $item->is_active ? 'checked' : '' }} data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="60" data-height="30"  @if(auth()->id() == $item->id) disabled @endif>
+                                                        {{$item->deskripsi}}
+                                                        {{-- <?= str_replace('_', ' ', $item->deskripsi) ?> --}}
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        @foreach($item->getRoleNames() as $role)
-                                                        <div class="badge bg-info">{{ $role }}</div>
-                                                        @endforeach
+                                                        <a href="{{ asset('storage/' . $item->file) }}" target="_blank">Download File</a>
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        <a href="{{ route('user.show', $item->id) }}" title="Detail"
+                                                        <a href="{{ route('projek.show', $item->id) }}" title="Detail"
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
 
-                                                        <a href="{{ route('user.edit', $item->id) }}" title="Edit"
+                                                        <a href="{{ route('projek.edit', $item->id) }}" title="Edit"
                                                             class="btn btn-sm btn-outline-warning">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </a>
-                                                        <button value="{{ route('user.destroy', $item->id) }}"
+                                                        <button value="{{ route('projek.destroy', $item->id) }}"
                                                             class="btn btn-sm btn-outline-danger delete"
-                                                            data-toggle="tooltip" data-placement="top" title="Hapus"
-                                                            @if(auth()->id() == $item->id) disabled @endif>
+                                                            data-toggle="tooltip" data-placement="top" title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @endforeach 
                                         </tbody>
                                     </table>
                                 </div>
@@ -101,8 +99,6 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            // Initialize Bootstrap Toggle
-            $('.toggle-status').bootstrapToggle();
             
             $.ajaxSetup({
                 headers: {
@@ -110,55 +106,6 @@
                 }
             });
 
-            // Handle switch change event
-            $('.toggle-status').change(function() {
-                let userId = $(this).data('id');
-                let url = `/user/${userId}/toggle-status`;
-                let state = $(this).prop('checked');
-                let confirmMessage = state ? "Apakah anda yakin ingin mengaktifkan akun ini?" : "Apakah anda yakin ingin menonaktifkan akun ini?";
-                let switchElement = $(this); // Store switch element
-
-                // SweetAlert2 untuk konfirmasi
-                swal({
-                    title: "Konfirmasi",
-                    text: confirmMessage,
-                    icon: "warning",
-                    buttons: {
-                        cancel: "Batal",
-                        confirm: {
-                            text: "Ya",
-                            value: true,
-                            visible: true,
-                            className: "btn-success",
-                            closeModal: true
-                        }
-                    },
-                    dangerMode: true,
-                }).then((willChange) => {
-                    if (willChange) {
-                        // Jika konfirmasi, lakukan AJAX
-                        $.ajax({
-                            type: "PATCH",
-                            url: url,
-                            success: function(response) {
-                                swal(response.status, {
-                                    icon: "success",
-                                });
-                            },
-                            error: function() {
-                                swal("Terjadi kesalahan", {
-                                    icon: "error",
-                                });
-                                // Revert switch if there is an error
-                                switchElement.bootstrapToggle('off', true); // Turn off the toggle on error
-                            }
-                        });
-                    } else {
-                        // Jika dibatalkan, kembalikan status switch ke keadaan semula
-                        switchElement.bootstrapToggle(state ? 'on' : 'off', true); // Set to original state
-                    }
-                });
-            });
 
             $(document).on('click', '.delete', function() {
                 let url = $(this).val();

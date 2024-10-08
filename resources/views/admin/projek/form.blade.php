@@ -5,10 +5,10 @@
             <div class="section">
                 <div class="section-header">
                     <div class="section-header-back">
-                        <a href="{{ route('user.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                        <a href="{{ route('projek.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
                     </div>
                     <h1>
-                        @if (@$user->exists)
+                        @if (@$projek->exists)
                             Edit
                             @php
                                 $aksi = 'Edit';
@@ -19,31 +19,31 @@
                                 $aksi = 'Tambah';
                             @endphp
                         @endif
-                        Data user
+                        Data projek
                     </h1>
                 </div>
-                @if (@$user->exists)
+                @if (@$projek->exists)
                     <form id="myForm" class="forms-sample" enctype="multipart/form-data" method="POST"
-                        action="{{ route('user.update', $user) }}">
+                        action="{{ route('projek.update', $projek) }}">
                         @method('put')
                     @else
                         <form id="myForm" class="forms-sample" enctype="multipart/form-data" method="POST"
-                            action="{{ route('user.store') }}">
+                            action="{{ route('projek.store') }}">
                 @endif
                 {{ csrf_field() }}
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <h5 class="card-header">Form User</h5>
+                                <h5 class="card-header">Form projek</h5>
                                 <div class="card-body">
                                     <div class="mb-3 row">
-                                        <label for="name" class="col-md-2 col-form-label">Nama <sup
+                                        <label for="name" class="col-md-2 col-form-label">Nama Projek<sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
                                                 id="name" name="name" placeholder="Masukan Nama"
-                                                value="{{ old('name', @$user->name) }}">
+                                                value="{{ old('name', @$projek->name) }}">
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">
                                                     {{ $errors->first('name') }}
@@ -53,63 +53,58 @@
                                     </div>
 
                                     <div class="mb-3 row">
-                                        <label for="email" class="col-md-2 col-form-label">Email <sup
+                                        <label for="tanggal" class="col-md-2 col-form-label">Tanggal <sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                                id="email" name="email" placeholder="Masukan Email"
-                                                value="{{ old('email', @$user->email) }}">
-                                            @if ($errors->has('email'))
+                                            <input type="date" class="form-control @error('tanggal') is-invalid @enderror"
+                                                id="tanggal" name="tanggal" placeholder="Masukan tanggal"
+                                                value="{{ old('tanggal', @$projek->tanggal) }}">
+                                            @if ($errors->has('tanggal'))
                                                 <span class="text-danger">
-                                                    {{ $errors->first('email') }}
+                                                    {{ $errors->first('tanggal') }}
                                                 </span>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="mb-3 row">
-                                        <label for="departemen" class="col-md-2 col-form-label">Departemen <sup
+                                        <label for="Deskripsi" class="col-md-2 col-form-label">Deskripsi <sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control @error('departemen') is-invalid @enderror"
-                                                id="departemen" name="departemen" placeholder="Masukan Departemen"
-                                                value="{{ old('departemen', @$user->departemen) }}">
-                                            @if ($errors->has('departemen'))
+                                            <textarea name="deskripsi" class="form-control" cols="100" rows="1">{{ old('deskripsi', @$projek->deskripsi) }}</textarea>
+                                            @if ($errors->has('deskripsi'))
                                                 <span class="text-danger">
-                                                    {{ $errors->first('departemen') }}
+                                                    {{ $errors->first('deskripsi') }}
                                                 </span>
                                             @endif
                                         </div>
                                     </div>
                                     
                                     <div class="mb-3 row">
-                                        <label for="role" class="col-md-2 col-form-label">Role  <sup
-                                            class="text-danger">*</sup></label>
+                                        <label for="role" class="col-md-2 col-form-label">File <sup class="text-danger">*</sup></label>
                                         <div class="col-md-10">
-                                            <select name="role" class="form-control selectric @error('role') is-invalid @enderror">
-                                                <option value="" selected disabled>Pilih Hak Akses</option>
+                                            <div class="input-group">
+                                                <input type="file" class="form-control @error('file') is-invalid @enderror"
+                                                    id="file" name="file" placeholder="Masukan file" value="{{ old('file') }}">
+                                                
+                                                <div class="input-group-append">
+                                                    @if (isset($projek) && $projek->file)
+                                                        <a href="{{ asset('storage/' . $projek->file) }}" class="btn btn-icon" target="_blank" download style="margin-left: 10px;">
+                                                            <i class="fas fa-download"></i>
+
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            </div>
                                             
-                                                @forelse ($role as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ old('role', isset($user) && $user->hasRole($item->id)) == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @empty
-                                                    <option value="{{ $item->id }}"
-                                                        {{ old('role', isset($user) ? $user->role : '') == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @endforelse
-                                            </select>
-                                            
-                                            
-                                            @error('role')
-                                                <span class="invalid-feedback" role="alert">
+                                            @error('file')
+                                                <span class="invalid-feedback" file="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
 
@@ -166,10 +161,5 @@
                 }
             });
         }
-
-        document.getElementById('kontak').addEventListener('input', function(evt) {
-            var input = evt.target;
-            input.value = input.value.replace(/[^0-9]/g, ''); // Hanya membiarkan angka
-        });
     </script>
 @endsection

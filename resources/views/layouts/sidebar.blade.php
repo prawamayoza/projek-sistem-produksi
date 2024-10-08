@@ -29,19 +29,13 @@
                     </a>
                 </li>
 
-                {{-- <li class="nav-item {{ request()->is('home*') ? 'active' : '' }}">
-                    <a href="{{ route('home') }}" class="nav-link">
+                <li class="nav-item {{ request()->is('projek*') ? 'active' : '' }}">
+                    <a href="{{ route('projek.index') }}" class="nav-link">
                         <i class="fas fa-chart-line"></i>
-                        <span>Sales Performance</span>
+                        <span>A. Projek</span>
                     </a>
                 </li>
 
-                <li class="nav-item {{ request()->is('laporan-harian*') ? 'active' : '' }}"> 
-                    <a href="{{ route('laporan-harian.index') }}" class="nav-link">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Jadwal Harian Teknisi</span>
-                    </a>
-                </li> --}}
             @endrole
 
 
