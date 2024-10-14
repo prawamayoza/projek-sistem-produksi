@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ProjekController;
+use App\Http\Controllers\TasklistController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('user', UserController::class);
             Route::patch('user/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
             Route::resource('projek', ProjekController::class);
+            Route::resource('task', TasklistController::class);
 
     });
     Route::group(
@@ -40,6 +42,14 @@ Route::middleware(['auth'])->group(function () {
         function () {
             Route::get('profil', [ProfilController::class, 'index'])->name('profil');
             Route::post('update-profil/{update}', [ProfilController::class, 'updateProfil'])->name('update-profil');
+            Route::get('projek', [ProjekController::class, 'index'])->name('projek.index');
+            Route::get('projek/{projek}', [ProjekController::class, 'show'])->name('projek.show');
+            
+            Route::get('task', [TasklistController::class, 'index'])->name('task.index');
+            Route::get('task/{task}', [TasklistController::class, 'show'])->name('task.show');
+            Route::post('/task/comment', [TasklistController::class, 'comment'])->name('task.comment');
+
+
     });
 
 });

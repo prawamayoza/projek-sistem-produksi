@@ -14,20 +14,21 @@
         </div>
 
         <ul class="sidebar-menu">
+            <li class="nav-item {{ request()->is('home') ? 'active' : '' }}">
+                <a href="{{ route('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
             @role('admin')
-                <li class="nav-item {{ request()->is('home') ? 'active' : '' }}">
-                    <a href="{{ route('home') }}" class="nav-link">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-
                 <li class="nav-item {{ request()->is('user*') ? 'active' : '' }}">
                     <a href="{{ route('user.index') }}" class="nav-link">
                         <i class="fas fa-user"></i>
                         <span>Master User</span>
                     </a>
                 </li>
+                @endrole
 
                 <li class="nav-item {{ request()->is('projek*') ? 'active' : '' }}">
                     <a href="{{ route('projek.index') }}" class="nav-link">
@@ -35,8 +36,13 @@
                         <span>A. Projek</span>
                     </a>
                 </li>
+                <li class="nav-item {{ request()->is('task*') ? 'active' : '' }}">
+                    <a href="{{ route('task.index') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Tasklist</span>
+                    </a>
+                </li>
 
-            @endrole
 
 
             {{-- @role('cs')

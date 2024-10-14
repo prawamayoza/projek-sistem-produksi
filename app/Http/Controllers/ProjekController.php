@@ -42,7 +42,7 @@ class ProjekController extends Controller
             'file'                  => 'required|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
-            'email.required'        => 'tanggal Wajib Diisi',
+            'tanggal.required'      => 'Tanggal Wajib Diisi',
             'deskripsi.required'    => 'Deskripsi Wajib Diisi',
             'file.required'         => 'File Projek Wajib Diisi',
             'file.max'              => 'File Projek Melebihi kapasitas Maximal 2048kb',
@@ -127,6 +127,7 @@ class ProjekController extends Controller
             'name'        => $request->name,
             'tanggal'     => $request->tanggal,
             'deskripsi'   => $request->deskripsi,
+            'status'      => $request->status,  
             'file'        => $filePath,
         ]);
 

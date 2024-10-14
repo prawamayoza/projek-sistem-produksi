@@ -20,5 +20,22 @@ class UserSeeder extends Seeder
             'password'      => bcrypt('password')
         ]);
         $admin->assignRole('admin');
+
+        $produksi = User::create([
+            'name'          => 'produksi',
+            'email'         => 'produksi@gmail.com',
+            'departemen'    => 'produksi',
+            'password'      => bcrypt('password')
+        ]);
+        $produksi->assignRole('peg.produksi');
+
+        $level = User::create([
+            'name'          => 'level',
+            'email'         => 'level@gmail.com',
+            'departemen'    => 'level',
+            'password'      => bcrypt('password')
+        ]);
+        $level->assignRole('c.level');
+    
     }
 }

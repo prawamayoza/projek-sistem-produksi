@@ -39,12 +39,6 @@ class User extends Authenticatable
         return 'id'; // Nama kolom UUID
     }
 
-
-
-
-
-
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -73,5 +67,15 @@ class User extends Authenticatable
     public function tasklist()
     {
         return $this->hasMany(Tasklist::class);
+    }
+
+    /**
+     * Get all of the comment for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

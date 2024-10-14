@@ -58,7 +58,21 @@
                                             @endif
                                         </div>
                                     </div>
-
+                                                                        
+                                    <div class="mb-3 row">
+                                        <label for="status" class="col-md-2 col-form-label">Status</label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control @error('status') is-invalid @enderror"
+                                                id="status" name="status" placeholder="Masukan status"
+                                                value="{{ old('status', @$projek->status) }}" disabled>
+                                            @if ($errors->has('status'))
+                                                <span class="text-danger">
+                                                    {{ $errors->first('status') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
                                     <div class="mb-3 row">
                                         <label for="file" class="col-md-2 col-form-label">File</label>
                                         <div class="col-md-10">
@@ -69,7 +83,7 @@
                                             @endif
                                         </div>
                                     </div>                                 
-                                    
+
                                 </div>
                             </div>
 

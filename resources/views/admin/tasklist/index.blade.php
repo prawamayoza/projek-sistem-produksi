@@ -3,7 +3,7 @@
     <div class="main-content">
         <div class="section">
             <div class="section-header">
-                <h1>Data Projek</h1>
+                <h1>Data Tasklist</h1>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -12,11 +12,11 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between w-100">
                                     <h4>
-                                        Data Projek
+                                        Data Tasklist
                                     </h4>
                                     @role('admin')
                                         <div class="d-flex justify-content-between">
-                                            <a href="{{ route('projek.create') }}"
+                                            <a href="{{ route('task.create') }}"
                                                 class="btn btn-outline-success btn-lg d-flex align-items-center ">
                                                 <i class="fa fa-plus pr-2"></i>
                                                 Tambah
@@ -34,13 +34,19 @@
                                                     #
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Nama
+                                                    Nama Task
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Tanggal
+                                                    Nama Projek
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Deskripsi
+                                                    Penanggung jawab
+                                                </th>
+                                                <th class="text-center px-2">
+                                                    Tanggal Dibuat
+                                                </th>
+                                                <th class="text-center px-2">
+                                                    Tanggal Deadline
                                                 </th>
                                                 <th class="text-center px-2">
                                                     Status
@@ -54,7 +60,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($projek as $item)
+                                            @foreach ($task as $item)
                                                 <tr>
                                                     <td class="px-2">
                                                         {{ $loop->iteration }}
@@ -63,10 +69,16 @@
                                                         {{ $item->name }}
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        {{ $item->tanggal }}
+                                                        {{ $item->projek->name }}
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        {{$item->deskripsi}}
+                                                        {{ $item->user->name }}
+                                                    </td>
+                                                    <td class="text-center px-2">
+                                                        {{$item->created_at->format('Y-m-d') }}
+                                                    </td>
+                                                    <td class="text-center px-2">
+                                                        {{$item->tanggal}}
                                                     </td>
                                                     <td class="text-center px-2">
                                                         {{$item->status}}
@@ -75,20 +87,26 @@
                                                         <a href="{{ asset('storage/' . $item->file) }}" target="_blank">Download File</a>
                                                     </td>
                                                     <td class="text-center px-2">
-                                                        <a href="{{ route('projek.show', $item->id) }}" title="Detail"
+                                                        <a href="{{ route('task.show', $item->id) }}" title="Detail"
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
-                                                       @role('admin') 
-                                                            <a href="{{ route('projek.edit', $item->id) }}" title="Edit"
-                                                                class="btn btn-sm btn-outline-warning">
-                                                                <i class="fas fa-pencil-alt"></i>
-                                                            </a>
-                                                            <button value="{{ route('projek.destroy', $item->id) }}"
-                                                                class="btn btn-sm btn-outline-danger delete"
-                                                                data-toggle="tooltip" data-placement="top" title="Hapus">
-                                                                <i class="fas fa-trash"></i>
+                                                        @role('c.level')
+                                                            <button class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#commentModal" 
+                                                                data-task-id="{{ $item->id }}" title="Komentar Tasklist">
+                                                                <i class="fas fa-comment"></i>
                                                             </button>
+                                                        @endrole
+                                                        @role('admin')
+                                                        <a href="{{ route('task.edit', $item->id) }}" title="Edit"
+                                                            class="btn btn-sm btn-outline-warning">
+                                                            <i class="fas fa-pencil-alt"></i>
+                                                        </a>
+                                                        <button value="{{ route('task.destroy', $item->id) }}"
+                                                            class="btn btn-sm btn-outline-danger delete"
+                                                            data-toggle="tooltip" data-placement="top" title="Hapus">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                         @endrole
                                                     </td>
                                                 </tr>
@@ -103,18 +121,77 @@
             </div>
         </div>
     </div>
+    <!-- Modal Comment -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Tambah Komentar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="commentForm" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="tasklist_id" id="tasklist_id">
+                        {{-- <input type="hidden" name="tasklist_id" value="{{ $task->id }}"> --}}
+                        <div class="form-group">
+                            <label for="comment">Komentar:</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Tambah Komentar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
         $(document).ready(function() {
-            
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
+            // Buka modal dan isi task_id ke dalam form
+            $('#commentModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var taskId = button.data('task-id');
+                var modal = $(this);
+                modal.find('.modal-body #tasklist_id').val(taskId);
+            });
 
+            // Handle form submission via AJAX
+            $('#commentForm').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+              
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('task.comment') }}", // Route untuk menyimpan komentar
+                    data: formData,
+                    success: function(response) {
+                        $('#commentModal').modal('hide');
+                        swal(response.status, {
+                            icon: "success",
+                        }).then((result) => {
+                            location.reload(); // Refresh halaman setelah komentar ditambahkan
+                        });
+                    },
+                    error: function(response) {
+                        console.log(response);
+                        swal("Error", "There was an issue submitting your comment.", "error");
+                    }
+                });
+            });
+
+            // Existing delete function
             $(document).on('click', '.delete', function() {
                 let url = $(this).val();
                 console.log(url);
@@ -154,5 +231,3 @@
         });
     </script>
 @endsection
-
-
