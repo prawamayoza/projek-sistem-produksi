@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('name');
             $table->date('tanggal');
             $table->enum('status', ['In Progress', 'Pending', 'Completed'])->default('Pending');
-            $table->string('file')
-            ->nullable();
+            $table->json('files')->nullable();  // Stores multiple file paths
+            $table->json('file_links')->nullable(); // Stores multiple links
             $table->timestamps();
         });
     }

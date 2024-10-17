@@ -39,7 +39,7 @@ class ProjekController extends Controller
             'name'                  => 'required',
             'tanggal'               => 'required',
             'deskripsi'             => 'required',
-            'file'                  => 'required|max:2048',
+            'file'                  => 'required|mimes:pdf,doc,docx|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
             'tanggal.required'      => 'Tanggal Wajib Diisi',
@@ -98,7 +98,7 @@ class ProjekController extends Controller
             'name'        => 'required',
             'tanggal'     => 'required',
             'deskripsi'   => 'required',
-            'file'        => 'nullable|file|max:2048',
+            'file'        => 'nullable|mimes:pdf,doc,docx|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
             'email.required'        => 'tanggal Wajib Diisi',

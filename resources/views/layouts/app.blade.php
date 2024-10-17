@@ -19,7 +19,7 @@
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <!-- CSS Libraries -->
-    <link rel="shortcut icon" href="{{ asset('/assets/img/avatar-1.png') }}">
+    <link rel="shortcut icon" href="{{asset('/assets/img/logo-circle.png')}}">
     <link rel="stylesheet" href="{{ asset('/node_modules/jqvmap/dist/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/node_modules/weathericons/css/weather-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/node_modules/weathericons/css/weather-icons-wind.min.css') }}">

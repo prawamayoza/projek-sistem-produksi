@@ -46,9 +46,6 @@
                                                     Status
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    File
-                                                </th>
-                                                <th class="text-center px-2">
                                                     Aksi
                                                 </th>
                                             </tr>
@@ -70,9 +67,6 @@
                                                     </td>
                                                     <td class="text-center px-2">
                                                         {{$item->status}}
-                                                    </td>
-                                                    <td class="text-center px-2">
-                                                        <a href="{{ asset('storage/' . $item->file) }}" target="_blank">Download File</a>
                                                     </td>
                                                     <td class="text-center px-2">
                                                         <a href="{{ route('projek.show', $item->id) }}" title="Detail"

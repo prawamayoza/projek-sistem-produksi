@@ -85,7 +85,7 @@
                                         <div class="col-md-10">
                                             <div class="input-group">
                                                 <input type="file" class="form-control @error('file') is-invalid @enderror"
-                                                    id="file" name="file" placeholder="Masukan file" value="{{ old('file') }}">
+                                                    id="file" name="file" placeholder="Masukan file" value="{{ old('file') }}" accept="application/pdf">
                                                 
                                                 <div class="input-group-append">
                                                     @if (isset($projek) && $projek->file)

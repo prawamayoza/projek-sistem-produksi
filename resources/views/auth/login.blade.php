@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Login &mdash; </title>
+    <title>Login &mdash; Kaabaverse </title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('/node_modules/izitoast/dist/css/iziToast.min.css') }}">
 
     <!-- Template CSS -->
-    <link rel="shortcut icon" href="{{ asset('/assets/img/avatar-1.png') }}">
+    <link rel="shortcut icon" href="{{asset('/assets/img/logo-circle.png')}}">
 
     <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/css/components.css') }}">
@@ -29,18 +29,19 @@
 <body>
     <div id="app">
         <section class="section">
+            <div class="loader" id="loading">
+                <img src="{{asset('/assets/img/logo-circle.png')}}" alt="loading">
+            </div>
             <div class="container mt-5">
                 <div class="row">
                     <div
                         class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-                        <div class="login-brand">
-                            <h3 class="primary"> </h3>
-                        </div>
+                            <img src="{{asset('/assets/img/logo.png')}}" alt="logo" class="login-logo" >
 
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h4>
-                                    Form Login
+                                    Form Login Kaabaverse
                                 </h4>
                             </div>
                             <div class="card-body">
@@ -168,6 +169,12 @@
             setTimeout(function() {
                 $('.alert').alert('close');
             }, 3000); 
+        });
+    </script>
+    <script>
+        // Menampilkan loader ketika login sedang diproses
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading').classList.add('active');
         });
     </script>
 </body>

@@ -94,7 +94,7 @@
                                     
                                     
                                     <div class="mb-3 row">
-                                        <label for="tanggal" class="col-md-2 col-form-label">Tanggal <sup
+                                        <label for="tanggal" class="col-md-2 col-form-label">Tanggal Deadlin <sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
                                             <input type="date" class="form-control @error('tanggal') is-invalid @enderror"
@@ -108,30 +108,6 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="mb-3 row">
-                                        <label for="role" class="col-md-2 col-form-label">File <sup class="text-danger">*</sup></label>
-                                        <div class="col-md-10">
-                                            <div class="input-group">
-                                                <input type="file" class="form-control @error('file') is-invalid @enderror"
-                                                    id="file" name="file" placeholder="Masukan file" value="{{ old('file') }}">
-                                                
-                                                <div class="input-group-append">
-                                                    @if (isset($task) && $task->file)
-                                                        <a href="{{ asset('storage/' . $task->file) }}" class="btn btn-icon" target="_blank" download style="margin-left: 10px;">
-                                                            <i class="fas fa-download"></i>
-
-                                                        </a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            
-                                            @error('file')
-                                                <span class="invalid-feedback" file="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     {{-- ketika form edit field ubah status tampil --}}
                                     @if (@$task->exists)
                                         <div class="mb-3 row">

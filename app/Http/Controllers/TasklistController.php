@@ -47,28 +47,18 @@ class TasklistController extends Controller
             'tanggal'               => 'required',
             'projek_id'             => 'required',
             'user_id'               => 'required',
-            'file'                  => 'required|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
             'tanggal.required'      => 'Tanggal Wajib Diisi',
             'user_id.required'     => 'Penanggung Jawab Wajib Diisi',
             'projek_id.required'   => 'Projek Wajib Diisi',
-            'file.required'         => 'File Projek Wajib Diisi',
-            'file.max'              => 'File Projek Melebihi kapasitas Maximal 2048kb',
         ]);
-        if ($request->hasFile('file')) {
-            $fileName = $request->file('file')->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('files', $fileName, 'public');
-        } else {
-            $filePath = null;
-        }
 
         Tasklist::create([
             'name'          => $request->name,
             'tanggal'       => $request->tanggal,
             'user_id'       => $request->user_id,
             'projek_id'     => $request->projek_id,
-            'file'          => $filePath
         ]);
 
         return redirect()->route('task.index')->with('success', 'Data Berhasil Ditambah');
@@ -113,30 +103,12 @@ class TasklistController extends Controller
             'tanggal'               => 'required',
             'projek_id'             => 'required',
             'user_id'               => 'required',
-            'file'                  => 'nullable|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
             'tanggal.required'      => 'Tanggal Wajib Diisi',
             'user_id.required'     => 'Penanggung Jawab Wajib Diisi',
             'projek_id.required'   => 'Projek Wajib Diisi',
-            'file.required'         => 'File Projek Wajib Diisi',
-            'file.max'              => 'File Projek Melebihi kapasitas Maximal 2048kb',
         ]);
-
-        // Jika ada file baru yang diupload
-        if ($request->hasFile('file')) {
-            // Hapus file lama
-            if ($task->file) {
-                Storage::disk('public')->delete($task->file);
-            }
-
-            // Dapatkan nama file asli
-            $fileName = $request->file('file')->getClientOriginalName();
-            // Simpan file baru dengan nama asli
-            $filePath = $request->file('file')->storeAs('files', $fileName, 'public');
-        } else {
-            $filePath = $task->file; // Tetap gunakan file lama jika tidak ada file baru
-        }
 
         $task->update([
             'name'          => $request->name,
@@ -144,7 +116,6 @@ class TasklistController extends Controller
             'user_id'       => $request->user_id,
             'projek_id'     => $request->projek_id,
             'status'        => $request->status,
-            'file'          => $filePath
         ]);
 
         return redirect()->route('task.index')->with('success', 'Data Berhasil Diperbarui');
@@ -182,4 +153,59 @@ class TasklistController extends Controller
         ]);
         return response()->json(['status' => 'Komentar Berhasil Ditambah']);
     }
+
+    public function uploadFile(Request $request, $id)
+    {
+        // Validasi input, baik files maupun file_links wajib diisi
+        $request->validate([
+            'files' => 'required_without:file_links', 
+            'file_links' => 'required_without:files', 
+            'files.*' => 'mimes:pdf,doc,docx|max:2048', 
+            'file_links.*' => 'url'
+        ],[
+            'files.required_without'       => "Upload dokumen wajib diisi jika link tidak ada",
+            'file_links.required_without'  => "Link wajib diisi jika tidak ada dokumen yang diupload",
+            'files.mimes'                  => "File harus berupa PDF, DOC, atau DOCX",
+            'files.max'                    => "Ukuran dokumen melebihi kapasitas maksimal 2MB",
+            'file_links.url'               => "Masukkan link yang valid"
+        ]);
+    
+        // Ambil tasklist berdasarkan ID
+        $tasklist = Tasklist::findOrFail($id);
+    
+        // Hapus file lama jika ada file baru yang diupload
+        if ($request->hasFile('files')) {
+            if ($tasklist->files) {
+                $existingFiles = json_decode($tasklist->files, true);
+                foreach ($existingFiles as $oldFile) {
+                    if (Storage::disk('public')->exists($oldFile)) {
+                        Storage::disk('public')->delete($oldFile);
+                    }
+                }
+            }
+    
+            // Simpan file baru
+            $uploadedFiles = [];
+            foreach ($request->file('files') as $file) {
+                $filePath = $file->storeAs('tasklist_files', $file->getClientOriginalName(), 'public');
+                $uploadedFiles[] = $filePath;
+            }
+            $tasklist->files = json_encode($uploadedFiles);
+        }
+    
+        // Simpan links jika ada link yang diinputkan, jika tidak, gunakan link yang sudah ada
+        if ($request->has('file_links')) {
+            $tasklist->file_links = json_encode($request->file_links);
+        } else {
+            $tasklist->file_links = $tasklist->file_links ?: json_encode([]);
+        }
+    
+        // Simpan perubahan tasklist
+        $tasklist->save();
+        
+        return response()->json(['status' => 'Upload Berhasil Ditambah']);
+    }
+    
+    
+    
 }
