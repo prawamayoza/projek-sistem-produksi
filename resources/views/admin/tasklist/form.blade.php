@@ -94,7 +94,7 @@
                                     
                                     
                                     <div class="mb-3 row">
-                                        <label for="tanggal" class="col-md-2 col-form-label">Tanggal Deadlin <sup
+                                        <label for="tanggal" class="col-md-2 col-form-label">Tanggal Deadline <sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
                                             <input type="date" class="form-control @error('tanggal') is-invalid @enderror"

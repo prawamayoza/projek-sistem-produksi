@@ -19,7 +19,7 @@
                                 $aksi = 'Tambah';
                             @endphp
                         @endif
-                        Data projek
+                        Data Project
                     </h1>
                 </div>
                 @if (@$projek->exists)
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <h5 class="card-header">Form projek</h5>
+                                <h5 class="card-header">Form Project</h5>
                                 <div class="card-body">
                                     <div class="mb-3 row">
                                         <label for="name" class="col-md-2 col-form-label">Nama Projek<sup

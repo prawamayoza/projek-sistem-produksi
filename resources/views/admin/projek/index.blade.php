@@ -3,7 +3,7 @@
     <div class="main-content">
         <div class="section">
             <div class="section-header">
-                <h1>Data Projek</h1>
+                <h1>Data Project</h1>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -12,7 +12,7 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between w-100">
                                     <h4>
-                                        Data Projek
+                                        Data Project
                                     </h4>
                                     @role('admin')
                                         <div class="d-flex justify-content-between">
@@ -31,7 +31,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="px-2" style="width: 10%">
-                                                    #
+                                                    No
                                                 </th>
                                                 <th class="text-center px-2">
                                                     Nama

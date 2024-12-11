@@ -29,7 +29,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="px-2" style="width: 10%">
-                                                    #
+                                                    No
                                                 </th>
                                                 <th class="text-center px-2">
                                                     Nama
@@ -118,22 +118,21 @@
                 let confirmMessage = state ? "Apakah anda yakin ingin mengaktifkan akun ini?" : "Apakah anda yakin ingin menonaktifkan akun ini?";
                 let switchElement = $(this); // Store switch element
 
-                // SweetAlert2 untuk konfirmasi
-                swal({
-                    title: "Konfirmasi",
-                    text: confirmMessage,
-                    icon: "warning",
-                    buttons: {
-                        cancel: "Batal",
-                        confirm: {
-                            text: "Ya",
-                            value: true,
-                            visible: true,
-                            className: "btn-success",
-                            closeModal: true
-                        }
-                    },
-                    dangerMode: true,
+// SweetAlert2 untuk konfirmasi tanpa tombol batal
+swal({
+    title: "Konfirmasi",
+    text: confirmMessage,
+    icon: "warning",
+    buttons: {
+        confirm: {
+            text: "Ya",
+            value: true,
+            visible: true,
+            className: "btn-success",
+            closeModal: true
+        }
+    },
+    dangerMode: true,
                 }).then((willChange) => {
                     if (willChange) {
                         // Jika konfirmasi, lakukan AJAX
@@ -153,9 +152,6 @@
                                 switchElement.bootstrapToggle('off', true); // Turn off the toggle on error
                             }
                         });
-                    } else {
-                        // Jika dibatalkan, kembalikan status switch ke keadaan semula
-                        switchElement.bootstrapToggle(state ? 'on' : 'off', true); // Set to original state
                     }
                 });
             });

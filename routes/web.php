@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ProjekController;
 use App\Http\Controllers\TasklistController;
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('user/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
             Route::resource('projek', ProjekController::class);
             Route::resource('task', TasklistController::class);
+            Route::resource('history', HistoryController::class);
 
 
             Route::get('profil', [ProfilController::class, 'index'])->name('profil');

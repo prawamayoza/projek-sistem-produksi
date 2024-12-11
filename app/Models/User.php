@@ -78,4 +78,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+        /**
+     * Get all of the history for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany(history_user::class);
+    }
 }

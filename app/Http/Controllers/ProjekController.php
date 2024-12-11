@@ -15,7 +15,7 @@ class ProjekController extends Controller
     {
         $projek = Projek::orderByDesc('created_at')->get();
         return view('admin.projek.index',[
-            'title'     => 'Projek List',
+            'title'     => 'Projek ',
             'projek'    => $projek,
         ]);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\history_user;
 use App\Models\Projek;
 use App\Models\Tasklist;
 use App\Models\User;
@@ -14,12 +15,21 @@ class TasklistController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $task = Tasklist::orderByDesc('created_at')->get();
-        return view('admin.tasklist.index',[
-            'task'      => $task,
-            'title'     => 'Tasklist'
+        $filter = (object)[
+            'projeks_id' => $request->projek_id // Hanya menggunakan projek_id
+        ];
+    
+        $task = Tasklist::filter($filter)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $projek = Projek::all(); // Pastikan model ini benar
+    
+        return view('admin.tasklist.index', [
+            'task'   => $task,
+            'projek' => $projek,
+            'title'  => 'Tasklist'
         ]);
     }
 
@@ -54,11 +64,17 @@ class TasklistController extends Controller
             'projek_id.required'   => 'Projek Wajib Diisi',
         ]);
 
-        Tasklist::create([
+        $tasklist = Tasklist::create([
             'name'          => $request->name,
             'tanggal'       => $request->tanggal,
             'user_id'       => $request->user_id,
             'projek_id'     => $request->projek_id,
+        ]);
+
+        history_user::create([
+            'user_id'     => $request->user_id,
+            'tasklist_id' => $tasklist->id,
+            'status'      => 'Projek Berjalan', // default status
         ]);
 
         return redirect()->route('task.index')->with('success', 'Data Berhasil Ditambah');
@@ -81,7 +97,7 @@ class TasklistController extends Controller
      */
     public function edit(string $id)
     {
-        $user       = User::all();
+        $user       = User::role('peg.produksi')->get();
         $projek     = Projek::where('status', 'Pending')->get();
         $task       = Tasklist::findOrFail($id);
         return view('admin.tasklist.form', [
@@ -97,31 +113,51 @@ class TasklistController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $task       = Tasklist::findOrFail($id);
+        $task = Tasklist::findOrFail($id);
+    
         $request->validate([
-            'name'                  => 'required',
-            'tanggal'               => 'required',
-            'projek_id'             => 'required',
-            'user_id'               => 'required',
+            'name'      => 'required',
+            'tanggal'   => 'required',
+            'projek_id' => 'required',
+            'user_id'   => 'required',
         ], [
-            'name.required'         => 'Nama Projek Wajib Diisi',
-            'tanggal.required'      => 'Tanggal Wajib Diisi',
-            'user_id.required'     => 'Penanggung Jawab Wajib Diisi',
-            'projek_id.required'   => 'Projek Wajib Diisi',
+            'name.required'      => 'Nama Projek Wajib Diisi',
+            'tanggal.required'   => 'Tanggal Wajib Diisi',
+            'user_id.required'   => 'Penanggung Jawab Wajib Diisi',
+            'projek_id.required' => 'Projek Wajib Diisi',
         ]);
-
+    
+        // Check if user_id or status has changed
+        $userChanged = $task->user_id != $request->user_id;
+        $statusChangedToCompleted = $request->status === 'Completed';
+        $statusChangedFromCompleted = $task->status === 'Completed' && $request->status !== 'Completed';
+    
+        // Update the Tasklist
         $task->update([
-            'name'          => $request->name,
-            'tanggal'       => $request->tanggal,
-            'user_id'       => $request->user_id,
-            'projek_id'     => $request->projek_id,
-            'status'        => $request->status,
+            'name'       => $request->name,
+            'tanggal'    => $request->tanggal,
+            'user_id'    => $request->user_id,
+            'projek_id'  => $request->projek_id,
+            'status'     => $request->status,
         ]);
-
+    
+        // Find the related HistoryUser entry
+        $history = history_user::where('tasklist_id', $task->id)->first();
+    
+        // Update HistoryUser if user_id has changed
+        if ($userChanged) {
+            $history->update(['user_id' => $request->user_id]);
+        }
+    
+        // Update HistoryUser status based on Tasklist status
+        if ($statusChangedToCompleted) {
+            $history->update(['status' => 'Projek Selesai']);
+        } elseif ($statusChangedFromCompleted) {
+            $history->update(['status' => 'Projek Berjalan']);
+        }
+    
         return redirect()->route('task.index')->with('success', 'Data Berhasil Diperbarui');
-
-    }
-
+    }    
     /**
      * Remove the specified resource from storage.
      */

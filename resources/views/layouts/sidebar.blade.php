@@ -26,18 +26,56 @@
                         <span>Master User</span>
                     </a>
                 </li>
+
+                <li class="nav-item {{ request()->is('projek*') ? 'active' : '' }}">
+                    <a href="{{ route('projek.index') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>A. Project</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ request()->is('task*') ? 'active' : '' }}">
+                    <a href="{{ route('task.index') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>A. Tasklist</span>
+                    </a>
+                </li>
             @endrole
 
+            @role('peg.produksi')
             <li class="nav-item {{ request()->is('projek*') ? 'active' : '' }}">
                 <a href="{{ route('projek.index') }}" class="nav-link">
                     <i class="fas fa-chart-line"></i>
-                    <span>A. Projek</span>
+                    <span>Peg. Project</span>
                 </a>
             </li>
             <li class="nav-item {{ request()->is('task*') ? 'active' : '' }}">
                 <a href="{{ route('task.index') }}" class="nav-link">
                     <i class="fas fa-chart-line"></i>
-                    <span>Tasklist</span>
+                    <span>Peg. Tasklist</span>
+                </a>
+            </li>
+            @endrole
+
+            @role('c.level')
+            <li class="nav-item {{ request()->is('projek*') ? 'active' : '' }}">
+                <a href="{{ route('projek.index') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>C. Projek</span>
+                </a>
+            </li>
+            <li class="nav-item {{ request()->is('task*') ? 'active' : '' }}">
+                <a href="{{ route('task.index') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>C. Tasklist</span>
+                </a>
+            </li>
+
+            @endrole
+            <li class="nav-item {{ request()->is('history*') ? 'active' : '' }}">
+                <a href="{{ route('history.index') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Aktivitas User</span>
                 </a>
             </li>
         </ul>

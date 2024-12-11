@@ -19,7 +19,7 @@
                                 $aksi = 'Tambah';
                             @endphp
                         @endif
-                        Data user
+                        Data User
                     </h1>
                 </div>
                 @if (@$user->exists)
