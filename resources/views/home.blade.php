@@ -142,20 +142,20 @@
         <div class="card mt-4">
             <div class="card-header">
                 <div class="d-flex justify-content-between w-100">
-                    <h4>Data Aktivitas Projek</h4>
+                    <h4>Data Aktivitas Tasklist</h4>
                 </div>
             </div>
             <div class="card-body">
                 <ul class="nav nav-tabs" id="projekTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="projek-berjalan-tab" data-toggle="tab" href="#projek-berjalan" role="tab" aria-controls="projek-berjalan" aria-selected="true">
-                            Project Berjalan
+                            Tasklist Berjalan
                             <span class="badge badge-danger" id="projek-berjalan-count">{{$countBerjalan}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="projek-selesai-tab" data-toggle="tab" href="#projek-selesai" role="tab" aria-controls="projek-selesai" aria-selected="false">
-                            Project Selesai
+                            Tasklist Selesai
                             <span class="badge badge-danger" id="projek-selesai-count">{{$countSelesai}}</span>
                         </a>
                     </li>

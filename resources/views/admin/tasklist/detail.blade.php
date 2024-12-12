@@ -140,8 +140,8 @@
                                                     <th class="text-center">Komentar</th>
                                                     <th class="text-center">Pengguna</th>
                                                     <th class="text-center">Tanggal</th>
-                                                    <th class="text-center">Dokumen</th>
                                                     <th class="text-center">Link</th>
+                                                    <th class="text-center">Dokumen</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

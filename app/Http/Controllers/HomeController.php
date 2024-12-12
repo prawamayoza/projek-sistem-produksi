@@ -28,8 +28,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $projekSelesai      = history_user::where('status', 'Projek Selesai')->orderByDesc('created_at')->get();
-        $projekBerjalan     = history_user::where('status', 'Projek Berjalan')->orderByDesc('created_at')->get();
+
+
         $countSelesai       = history_user::where('status', 'Projek Selesai')->count();
         $countBerjalan      = history_user::where('status', 'Projek Berjalan')->count();
         $countInprogres     = Projek::where('status', 'In Progres')->count();
@@ -40,9 +40,17 @@ class HomeController extends Controller
         if (Auth::user()->hasRole('peg.produksi')) {
             // Jika yang login adalah pegawai, hitung tasklist berdasarkan user_id
             $countTask = Tasklist::where('user_id', Auth::id())->count();
+            $projekSelesai      = history_user::where('status', 'Projek Selesai')->where('user_id', Auth::id())->orderByDesc('created_at')->get();
+            $projekBerjalan     = history_user::where('status', 'Projek Berjalan')->where('user_id', Auth::id())->orderByDesc('created_at')->get();
+            $countSelesai       = history_user::where('status', 'Projek Selesai')->where('user_id', Auth::id())->count();
+            $countBerjalan      = history_user::where('status', 'Projek Berjalan')->where('user_id', Auth::id())->count();
         } else {
             // Jika yang login bukan pegawai, hitung seluruh tasklist
             $countTask = Tasklist::count();
+            $projekSelesai      = history_user::where('status', 'Projek Selesai')->orderByDesc('created_at')->get();
+            $projekBerjalan     = history_user::where('status', 'Projek Berjalan')->orderByDesc('created_at')->get();
+            $countSelesai       = history_user::where('status', 'Projek Selesai')->count();
+            $countBerjalan      = history_user::where('status', 'Projek Berjalan')->count();
         }
 
 
