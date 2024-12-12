@@ -38,7 +38,7 @@
                                 <h5 class="card-header">Form Project</h5>
                                 <div class="card-body">
                                     <div class="mb-3 row">
-                                        <label for="name" class="col-md-2 col-form-label">Nama Projek<sup
+                                        <label for="name" class="col-md-2 col-form-label">Nama Project<sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
@@ -111,7 +111,7 @@
                                             <div class="col-md-10">
                                                 <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
                                                     <option value="Pending" {{ old('status', @$projek->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                    <option value="In Progress" {{ old('status', @$projek->status) == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                                                    <option value="In Progres" {{ old('status', @$projek->status) == 'In Progres' ? 'selected' : '' }}>In Progres</option>
                                                     <option value="Completed" {{ old('status', @$projek->status) == 'Completed' ? 'selected' : '' }}>Completed</option>
                                                 </select>
                                                 @if ($errors->has('status'))

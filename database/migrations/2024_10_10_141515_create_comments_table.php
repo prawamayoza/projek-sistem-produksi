@@ -22,6 +22,8 @@ return new class extends Migration
             ->constrained()
             ->cascadeOnUpdate();
             $table->text('comment');
+            $table->json('files')->nullable();  // Stores multiple file paths
+            $table->json('file_links')->nullable(); // Stores multiple links
             $table->timestamps();
         });
     }

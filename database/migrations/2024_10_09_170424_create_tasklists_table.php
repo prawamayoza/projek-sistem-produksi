@@ -23,7 +23,7 @@ return new class extends Migration
             ->cascadeOnUpdate();
             $table->string('name');
             $table->date('tanggal');
-            $table->enum('status', ['In Progress', 'Pending', 'Completed'])->default('Pending');
+            $table->enum('status', ['In Progres', 'Pending', 'Completed'])->default('Pending');
             $table->json('files')->nullable();  // Stores multiple file paths
             $table->json('file_links')->nullable(); // Stores multiple links
             $table->timestamps();

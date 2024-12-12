@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->text('deskripsi');
             $table->string('file');
-            $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');
+            $table->enum('status', ['Pending', 'In Progres', 'Completed'])->default('Pending');
             $table->timestamps();
         });
     }

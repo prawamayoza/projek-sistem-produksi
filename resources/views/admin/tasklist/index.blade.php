@@ -48,7 +48,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th class="text-center">Nama Task</th>
+                                            <th class="text-center">Nama Tasklist</th>
                                             <th class="text-center">Nama Projek</th>
                                             <th class="text-center">Penanggung jawab</th>
                                             <th class="text-center">Tanggal Dibuat</th>
@@ -120,6 +120,20 @@
                     <div class="form-group">
                         <label for="comment">Komentar:</label>
                         <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="files">Upload Gambar:</label>
+                        <input type="file" class="form-control" id="files" name="files[]" accept="image/jpeg,image/png" multiple>
+                        @error('files')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="file_links">Upload Links:</label>
+                        <input type="url" class="form-control" id="file_links" name="file_links[]" placeholder="https://example.com" multiple>
+                        @error('file_links')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">

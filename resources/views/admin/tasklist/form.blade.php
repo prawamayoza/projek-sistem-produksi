@@ -38,7 +38,7 @@
                                 <h5 class="card-header">Form Tasklist</h5>
                                 <div class="card-body">
                                     <div class="mb-3 row">
-                                        <label for="name" class="col-md-2 col-form-label">Nama task<sup
+                                        <label for="name" class="col-md-2 col-form-label">Nama Tasklist<sup
                                                 class="text-danger">*</sup></label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control @error('name') is-invalid @enderror"
@@ -115,7 +115,7 @@
                                             <div class="col-md-10">
                                                 <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
                                                     <option value="Pending" {{ old('status', @$task->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                    <option value="In Progress" {{ old('status', @$task->status) == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                                                    <option value="In Progres" {{ old('status', @$task->status) == 'In Progres' ? 'selected' : '' }}>In Progres</option>
                                                     <option value="Completed" {{ old('status', @$task->status) == 'Completed' ? 'selected' : '' }}>Completed</option>
                                                 </select>
                                                 @if ($errors->has('status'))

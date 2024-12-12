@@ -1024,7 +1024,38 @@ select.form-control:not([size]):not([multiple]) {
   display: flex;
   height: 50px;
   align-items: center;
+  margin-bottom: 10px;
+  
 }
+/* Tooltip container */
+.card-stats-item {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Tooltip text */
+.card-stats-item .tooltip {
+  position: absolute;
+  bottom: 110%; /* Position above the item */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  white-space: nowrap; /* Prevent wrapping of the tooltip text */
+  font-size: 14px;
+}
+
+/* Show the tooltip on hover */
+.card-stats-item:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .card .card-stats .card-stats-item {
   width: 33.3333333333%;
   text-align: center;

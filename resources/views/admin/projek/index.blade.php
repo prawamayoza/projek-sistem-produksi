@@ -34,7 +34,7 @@
                                                     No
                                                 </th>
                                                 <th class="text-center px-2">
-                                                    Nama
+                                                    Nama Project
                                                 </th>
                                                 <th class="text-center px-2">
                                                     Tanggal
