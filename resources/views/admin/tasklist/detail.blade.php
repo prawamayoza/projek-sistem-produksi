@@ -99,7 +99,7 @@
                                                 @endphp
                                                 @foreach($files as $file)
                                                     <a style="margin-bottom: 1%" href="{{ asset('storage/' . $file) }}" class="btn btn-primary" target="_blank" title="{{ basename($file) }}">
-                                                        Unduh File {{ \Illuminate\Support\Str::limit(basename($file), 20) }}
+                                                        Unduh File {{ \Illuminate\Support\Str::limit(basename($file), 10) }}
                                                     </a>
                                                 
                                                 @endforeach
@@ -140,15 +140,36 @@
                                                     <th class="text-center">Komentar</th>
                                                     <th class="text-center">Pengguna</th>
                                                     <th class="text-center">Tanggal</th>
+                                                    <th class="text-center">Dokumen</th>
+                                                    <th class="text-center">Link</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($task->comment as $comment)
                                                     <tr>
                                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                                        <td>{{ $comment->comment }}</td>
-                                                        <td>{{ $comment->user->name }}</td>
-                                                        <td>{{ $comment->created_at->format('Y-m-d ') }}</td>
+                                                        <td class="text-center">{{ $comment->comment }}</td>
+                                                        <td class="text-center">{{ $comment->user->name }}</td>
+                                                        <td class="text-center">{{ $comment->created_at->format('Y-m-d ') }}</td>
+                                                        <td class="text-center">
+                                                            @php
+                                                                $fileLinks = json_decode($comment->file_links, true);
+                                                            @endphp
+                                                            @foreach($fileLinks as $link)
+                                                                <a href="{{ $link }}" class="btn btn-primary" target="_blank">Buka Link</a><br>
+                                                            @endforeach
+                                                        </td>
+                                                        <td class="text-center"> 
+                                                            @php
+                                                                $files = json_decode($comment->files, true);
+                                                            @endphp
+                                                            @foreach($files as $file)
+                                                                <a style="margin-bottom: 1%" href="{{ asset('storage/' . $file) }}" class="btn btn-primary" target="_blank" title="{{ basename($file) }}">
+                                                                    <i class="fas fa-download"></i>
+                                                                </a>
+                                                            
+                                                            @endforeach
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

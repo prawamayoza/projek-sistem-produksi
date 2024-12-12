@@ -203,12 +203,14 @@
 
         $('#commentForm').on('submit', function(e) {
             e.preventDefault();
-            var formData = $(this).serialize();
+            var formData = new FormData(this); // Gunakan FormData untuk menangani file
 
             $.ajax({
                 type: "POST",
                 url: "{{ route('task.comment') }}",
                 data: formData,
+                contentType: false, // Hindari pengaturan content-type secara otomatis
+                processData: false, // Hindari pemrosesan data secara otomatis
                 success: function(response) {
                     $('#commentModal').modal('hide');
                     swal(response.status, {
@@ -219,7 +221,7 @@
                 },
                 error: function(response) {
                     console.log(response);
-                    swal("Error", "There was an issue submitting your comment.", "error");
+                    swal("Error", "Data Tidak Lengkap.", "error");
                 }
             });
         });

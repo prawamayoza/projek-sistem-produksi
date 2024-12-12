@@ -1155,9 +1155,15 @@ select.form-control:not([size]):not([multiple]) {
 /* 3.6 Table */
 .table {
   color: inherit;
+  word-wrap: break-word; /* Memastikan teks panjang akan terpotong sesuai lebar sel */
+  white-space: normal; /* Mengaktifkan pembungkusan teks */
+  overflow-wrap: break-word; /* Untuk kompatibilitas dengan browser lain */
 }
 .table td, .table:not(.table-bordered) th {
   border-top: none;
+  word-wrap: break-word; /* Memastikan teks panjang akan terpotong sesuai lebar sel */
+  white-space: normal; /* Mengaktifkan pembungkusan teks */
+  overflow-wrap: break-word; /* Untuk kompatibilitas dengan browser lain */
 }
 .table:not(.table-sm):not(.table-md):not(.dataTable) td, .table:not(.table-sm):not(.table-md):not(.dataTable) th {
   padding: 0 25px;

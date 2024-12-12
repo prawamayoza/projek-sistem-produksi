@@ -8,6 +8,7 @@ use App\Models\Projek;
 use App\Models\Tasklist;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TasklistController extends Controller
@@ -17,14 +18,24 @@ class TasklistController extends Controller
      */
     public function index(Request $request)
     {
+        
+        $id = Auth::user()->id;
         $filter = (object)[
             'projeks_id' => $request->projek_id // Hanya menggunakan projek_id
         ];
+
+        if (Auth::user()->hasRole('peg.produksi')) {
+            $task = Tasklist::filter($filter)
+            ->orderBy('created_at', 'desc')
+            ->where('user_id', $id)
+            ->get();
+        } else {
+            $task = Tasklist::filter($filter)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }
     
-        $task = Tasklist::filter($filter)
-        ->orderBy('created_at', 'desc')
-        ->get();
-        $projek = Projek::all(); // Pastikan model ini benar
+        $projek = Projek::all(); 
     
         return view('admin.tasklist.index', [
             'task'   => $task,
@@ -174,31 +185,68 @@ class TasklistController extends Controller
         return response()->json(['status' => 'Data Telah Dihapus']);
     }
 
+    private function handleUpload($request)
+    {
+        $uploadedFiles = [];
+        $fileLinks = [];
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filePath = $file->storeAs('tasklist_files', $file->getClientOriginalName(), 'public');
+                $uploadedFiles[] = $filePath;
+            }
+        }
+
+        if ($request->has('file_links')) {
+            $fileLinks = $request->file_links;
+        }
+
+        return [
+            'files' => json_encode($uploadedFiles),
+            'file_links' => json_encode($fileLinks),
+        ];
+    }
+
     public function comment(Request $request)
     {
         $request->validate([
-            'tasklist_id' => 'required|exists:tasklists,id',
-            'comment' => 'required|string',
+            'tasklist_id'       => 'required|exists:tasklists,id',
+            'comment'           => 'required|string',
+            'files'             => 'required_without:file_links',
+            'file_links'        => 'required_without:files',
+            'files.*'           => 'required|mimes:jpg,jpeg,png|max:2048',
+            'file_links.*'      => 'url'
+        ], [
+            'files.required_without'       => "Upload dokumen wajib diisi jika link tidak ada",
+            'file_links.required_without'  => "Link wajib diisi jika tidak ada dokumen yang diupload",
+            'files.mimes'                  => "File harus berupa JPG, JPEG, atau PNG",
+            'files.max'                    => "Ukuran file melebihi kapasitas maksimal 2MB",
+            'file_links.url'               => "Masukkan link yang valid"
         ]);
 
-        // Simpan komentar
+        // Panggil fungsi handleUpload
+        $uploadResult = $this->handleUpload($request);
+        // Simpan komentar dengan files dan file_links
         Comment::create([
             'tasklist_id' => $request->tasklist_id,
             'comment' => $request->comment,
             'user_id' => auth()->id(),
+            'files' => $uploadResult['files'],
+            'file_links' => $uploadResult['file_links'],
         ]);
+
         return response()->json(['status' => 'Komentar Berhasil Ditambah']);
     }
 
+
     public function uploadFile(Request $request, $id)
     {
-        // Validasi input, baik files maupun file_links wajib diisi
         $request->validate([
-            'files' => 'required_without:file_links', 
-            'file_links' => 'required_without:files', 
-            'files.*' => 'mimes:pdf,doc,docx|max:2048', 
-            'file_links.*' => 'url'
-        ],[
+            'files'             => 'required_without:file_links',
+            'file_links'        => 'required_without:files',
+            'files.*'           => 'mimes:pdf,doc,docx|max:2048',
+            'file_links.*'      => 'url'
+        ], [
             'files.required_without'       => "Upload dokumen wajib diisi jika link tidak ada",
             'file_links.required_without'  => "Link wajib diisi jika tidak ada dokumen yang diupload",
             'files.mimes'                  => "File harus berupa PDF, DOC, atau DOCX",
@@ -206,42 +254,17 @@ class TasklistController extends Controller
             'file_links.url'               => "Masukkan link yang valid"
         ]);
     
-        // Ambil tasklist berdasarkan ID
         $tasklist = Tasklist::findOrFail($id);
     
-        // Hapus file lama jika ada file baru yang diupload
-        if ($request->hasFile('files')) {
-            if ($tasklist->files) {
-                $existingFiles = json_decode($tasklist->files, true);
-                foreach ($existingFiles as $oldFile) {
-                    if (Storage::disk('public')->exists($oldFile)) {
-                        Storage::disk('public')->delete($oldFile);
-                    }
-                }
-            }
+        // Panggil fungsi handleUpload
+        $uploadResult = $this->handleUpload($request);
     
-            // Simpan file baru
-            $uploadedFiles = [];
-            foreach ($request->file('files') as $file) {
-                $filePath = $file->storeAs('tasklist_files', $file->getClientOriginalName(), 'public');
-                $uploadedFiles[] = $filePath;
-            }
-            $tasklist->files = json_encode($uploadedFiles);
-        }
-    
-        // Simpan links jika ada link yang diinputkan, jika tidak, gunakan link yang sudah ada
-        if ($request->has('file_links')) {
-            $tasklist->file_links = json_encode($request->file_links);
-        } else {
-            $tasklist->file_links = $tasklist->file_links ?: json_encode([]);
-        }
-    
-        // Simpan perubahan tasklist
+        // Update tasklist dengan files dan file_links baru
+        $tasklist->files = $uploadResult['files'];
+        $tasklist->file_links = $uploadResult['file_links'];
         $tasklist->save();
-        
+    
         return response()->json(['status' => 'Upload Berhasil Ditambah']);
     }
-    
-    
     
 }
