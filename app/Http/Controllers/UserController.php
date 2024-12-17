@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $user = User::orderByDesc('created_at')->get();
-        return view('Admin.User.index',[
+        return view('admin.user.index',[
             'user'  => $user,
             'title' => 'Master User'
         ]);
@@ -52,7 +52,7 @@ class UserController extends Controller
             'role.required'         => 'Hak Akses Wajib Diisi',
         ]);
         $role = Role::findOrFail($request->role);
-        
+
         $user = User::create([
             'name'          => $request->name,
             'email'         => $request->email,
