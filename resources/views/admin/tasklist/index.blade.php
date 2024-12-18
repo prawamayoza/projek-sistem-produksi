@@ -62,7 +62,13 @@
                                             <tr>
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $item->name }}</td>
-                                                <td class="text-center">{{ $item->projek->name }}</td>
+                                                <td class="text-center">
+                                                    @if(optional(@$item->projek)->name)
+                                                        {{ @$item->projek->name }}
+                                                    @else
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Data projek sudah terhapus, silahkan cek data projek.">-</span>
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">{{ $item->user->name }}</td>
                                                 <td class="text-center">{{ $item->created_at->format('Y-m-d') }}</td>
                                                 <td class="text-center">{{ $item->tanggal }}</td>

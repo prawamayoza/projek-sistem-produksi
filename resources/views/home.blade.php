@@ -179,7 +179,13 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->user->name }}</td>
-                                            <td class="text-center">{{ $item->tasklist->projek->name }}</td>
+                                            <td class="text-center">
+                                                @if(optional(@$item->tasklist->projek)->name)
+                                                    {{ @$item->tasklist->projek->name }}
+                                                @else
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Data projek sudah terhapus, silahkan cek data projek.">-</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">{{ $item->tasklist->name }}</td>
                                             <td class="text-center">{{ $item->status }}</td>
                                         </tr>
@@ -207,7 +213,13 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $item->user->name }}</td>
-                                            <td class="text-center">{{ $item->tasklist->projek->name }}</td>
+                                            <td class="text-center">
+                                                @if(optional(@$item->tasklist->projek)->name)
+                                                    {{ @$item->tasklist->projek->name }}
+                                                @else
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Data projek sudah terhapus, silahkan cek data projek.">-</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">{{ $item->tasklist->name }}</td>
                                             <td class="text-center">{{ $item->status }}</td>
                                         </tr>

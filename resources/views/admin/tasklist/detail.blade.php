@@ -34,7 +34,7 @@
                                         <label for="projek_id" class="col-md-2 col-form-label">Nama Projek</label>
                                         <div class="col-md-10">
                                             <input type="text" class="form-control @error('projek_id') is-invalid @enderror"
-                                                id="projek_id" name="projek_id" placeholder="Masukan projek_id"
+                                                id="projek_id" name="projek_id" placeholder="Data projek sudah terhapus, silahkan cek data projek."
                                                 value="{{ old('projek_id', @$task->projek->name) }}" disabled>
                                             @if ($errors->has('projek_id'))
                                                 <span class="text-danger">{{ $errors->first('projek_id') }}</span>
