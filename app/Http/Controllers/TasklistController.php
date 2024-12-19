@@ -174,12 +174,16 @@ class TasklistController extends Controller
      */
     public function destroy(string $id)
     {
-        $task =Tasklist::find($id);
+        $task = Tasklist::findOrFail($id);
 
         if ($task->file) {
             Storage::disk('public')->delete($task->file);
         }
 
+        // Hapus data history yang terkait
+        history_user::where('tasklist_id', $task->id)->delete();
+
+        // Hapus tasklist
         $task->delete();
 
         return response()->json(['status' => 'Data Telah Dihapus']);
