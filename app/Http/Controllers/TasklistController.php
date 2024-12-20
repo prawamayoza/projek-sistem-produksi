@@ -109,7 +109,7 @@ class TasklistController extends Controller
     public function edit(string $id)
     {
         $user       = User::role('peg.produksi')->get();
-        $projek     = Projek::where('status', 'Pending')->get();
+        $projek     = Projek::where('status', '!=', 'Completed')->get();
         $task       = Tasklist::findOrFail($id);
         return view('admin.tasklist.form', [
             'user'      => $user,
