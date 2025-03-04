@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
             Route::resource('user', UserController::class);
-            Route::patch('user/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
+            Route::post('/user/toggle-status/{user}', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
             Route::resource('projek', ProjekController::class);
             Route::resource('task', TasklistController::class);
             Route::resource('history', HistoryController::class);

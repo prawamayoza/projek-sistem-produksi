@@ -142,10 +142,16 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        $user->is_active = !$user->is_active; // Toggle status
+        // Pastikan user tidak bisa menonaktifkan dirinya sendiri
+        if (auth()->id() == $user->id) {
+            return response()->json(['status' => 'Anda tidak bisa menonaktifkan akun sendiri!'], 403);
+        }
+    
+        $user->is_active = !$user->is_active;
         $user->save();
-
+    
         return response()->json(['status' => 'Status berhasil diperbarui']);
     }
+    
 
 }

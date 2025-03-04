@@ -88,6 +88,28 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            
+            $('.toggle-status').change(function() {
+                let userId = $(this).data('id');
+                let status = $(this).prop('checked') ? 1 : 0;
+
+                $.ajax({
+                    type: "POST",
+                    url: `/user/toggle-status/${userId}`,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        is_active: status
+                    },
+                    success: function(response) {
+                        swal("Sukses", response.status, "success");
+                    },
+                    error: function(xhr) {
+                        swal("Terjadi Kesalahan", "Gagal mengubah status pengguna", "error");
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
 
             // Delete Button Handler
             $(document).on('click', '.delete', function() {
