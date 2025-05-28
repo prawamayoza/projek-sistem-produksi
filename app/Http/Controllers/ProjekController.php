@@ -36,12 +36,13 @@ class ProjekController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'                  => 'required',
+            'name'                  => 'required|unique:projeks,name',
             'tanggal'               => 'required',
             'deskripsi'             => 'required',
             'file'                  => 'required|mimes:pdf,doc,docx|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
+            'name.unique'           => 'Nama Projek Sudah Digunakan',
             'tanggal.required'      => 'Tanggal Wajib Diisi',
             'deskripsi.required'    => 'Deskripsi Wajib Diisi',
             'file.required'         => 'File Projek Wajib Diisi',
@@ -95,12 +96,13 @@ class ProjekController extends Controller
     {
         $projek = Projek::findOrFail($id);
         $request->validate([
-            'name'        => 'required',
+            'name'        => 'required|unique:projeks,name,' . $id,
             'tanggal'     => 'required',
             'deskripsi'   => 'required',
             'file'        => 'nullable|mimes:pdf,doc,docx|max:2048',
         ], [
             'name.required'         => 'Nama Projek Wajib Diisi',
+            'name.unique'           => 'Nama Projek Sudah Digunakan',
             'email.required'        => 'tanggal Wajib Diisi',
             'deskripsi.required'    => 'Deskripsi Wajib Diisi',
             'file.required'         => 'File Projek Wajib Diisi',

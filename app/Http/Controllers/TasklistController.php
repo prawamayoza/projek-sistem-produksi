@@ -64,12 +64,13 @@ class TasklistController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'                  => 'required',
+            'name'                  => 'required|unique:tasklists,name',
             'tanggal'               => 'required',
             'projek_id'             => 'required',
             'user_id'               => 'required',
         ], [
-            'name.required'         => 'Nama Projek Wajib Diisi',
+            'name.required'         => 'Nama Task Wajib Diisi',
+            'name.unique'           => 'Nama Task Sudah Digunakan',
             'tanggal.required'      => 'Tanggal Wajib Diisi',
             'user_id.required'     => 'Penanggung Jawab Wajib Diisi',
             'projek_id.required'   => 'Projek Wajib Diisi',
@@ -127,12 +128,13 @@ class TasklistController extends Controller
         $task = Tasklist::findOrFail($id);
     
         $request->validate([
-            'name'      => 'required',
+            'name'      => 'required|unique:tasklists,name,' . $id,
             'tanggal'   => 'required',
             'projek_id' => 'required',
             'user_id'   => 'required',
         ], [
-            'name.required'      => 'Nama Projek Wajib Diisi',
+            'name.required'      => 'Nama Task Wajib Diisi',
+            'name.unique'        => 'Nama Task Sudah Digunakan',
             'tanggal.required'   => 'Tanggal Wajib Diisi',
             'user_id.required'   => 'Penanggung Jawab Wajib Diisi',
             'projek_id.required' => 'Projek Wajib Diisi',

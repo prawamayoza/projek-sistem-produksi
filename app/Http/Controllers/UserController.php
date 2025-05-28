@@ -39,12 +39,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'                  => 'required',
+            'name'                  => 'required|unique:users,name',
             'email'                 => 'required|email|unique:users,email',
             'role'                  => 'required',
             'departemen'            => 'required',
         ], [
             'name.required'         => 'Nama Wajib Diisi',
+            "name.unique"           => 'Nama Sudah Digunakan',
             'email.required'        => 'Email Wajib Diisi',
             'email.email'           => 'Format Email Harus Sesuai',
             'email.unique'          => 'Email Sudah Digunakan',
@@ -101,11 +102,12 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'              => 'required',
+            'name'              => 'required|unique:users,name,' . $id,
             'role'              => 'required',
             'email'             => 'required|email|unique:users,email,' . $id,
         ], [
             'name.required'         => 'Nama Wajib Diisi',
+            "name.unique"           => 'Nama Sudah Digunakan',
             'email.required'        => 'Email Wajib Diisi',
             'email.email'           => 'Format Email Harus Sesuai',
             'email.unique'          => 'Email Sudah Digunakan',
